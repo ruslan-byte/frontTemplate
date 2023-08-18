@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
+	mode: 'development',
 	entry: {
 		main: path.resolve(__dirname, './src/index.js')
 	},
@@ -11,10 +12,31 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-            title: 'webpack Boilerplate',
-            template: path.resolve(__dirname, './src/template.html'), 
+            template: path.resolve(__dirname, './src/template.twig'), 
             filename: 'index.html',
         }),
         new CleanWebpackPlugin()
-	]
+	],
+	module:
+	{
+		rules:[
+			{
+				test: /\.twig$/,
+				use: {
+					loader: 'twig-loader',
+				}
+			},
+			{
+				test: /\.scss$/,
+				use: ['style-loader', 'css-loader', 'sass-loader'],
+			}
+		]
+	},
+	devServer: {
+		static: {
+			directory: path.join(__dirname, 'dist'),
+		},
+		compress: true,
+		port: 8080,
+	},
 }

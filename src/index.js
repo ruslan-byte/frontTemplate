@@ -1,1 +1,1 @@
-console.log('123')
+import './assets/scss/main.scss'
